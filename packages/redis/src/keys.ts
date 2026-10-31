@@ -47,7 +47,7 @@ export function buildKey(options: BuildKeyOptions): string {
 }
 
 /**
- * Cache key: `cache:{<projectId>}:entry:<key>`
+ * Cache value key: `cache:{<projectId>}:entry:<key>`
  */
 export function cacheKey(projectId: string, key: string): string {
   return buildKey({
@@ -59,7 +59,20 @@ export function cacheKey(projectId: string, key: string): string {
 }
 
 /**
- * Queue pending (ready) key: `queue:{<projectId>}:pending:<queueName>`
+ * Cache refresh lock key: `cache:{<projectId>}:lock:<key>`
+ */
+export function cacheLockKey(projectId: string, key: string): string {
+  return buildKey({
+    prefix: "cache",
+    projectId,
+    resource: "lock",
+    identifier: key,
+  });
+}
+
+/**
+ * Queue pending (ready/scheduled) key: `queue:{<projectId>}:pending:<queueName>`
+ * Implemented as a Sorted Set (zset) where score is eligible execution timestamp (runAt in ms).
  */
 export function queuePendingKey(projectId: string, queueName: string): string {
   return buildKey({
@@ -72,6 +85,7 @@ export function queuePendingKey(projectId: string, queueName: string): string {
 
 /**
  * Queue processing (in-flight) key: `queue:{<projectId>}:processing:<queueName>`
+ * Implemented as a Sorted Set (zset) where score is lease expiry timestamp in ms.
  */
 export function queueProcessingKey(projectId: string, queueName: string): string {
   return buildKey({
@@ -107,6 +121,30 @@ export function queueDeadLetterKey(projectId: string, queueName: string): string
 }
 
 /**
+ * Queue job data hash key: `queue:{<projectId>}:job:<jobId>`
+ */
+export function queueJobKey(projectId: string, jobId: string): string {
+  return buildKey({
+    prefix: "queue",
+    projectId,
+    resource: "job",
+    identifier: jobId,
+  });
+}
+
+/**
+ * Queue idempotency key: `queue:{<projectId>}:idem:<idempotencyKey>`
+ */
+export function queueIdemKey(projectId: string, idempotencyKey: string): string {
+  return buildKey({
+    prefix: "queue",
+    projectId,
+    resource: "idem",
+    identifier: idempotencyKey,
+  });
+}
+
+/**
  * Distributed lock key: `lock:{<projectId>}:resource:<lockName>`
  */
 export function lockKey(projectId: string, lockName: string): string {
@@ -114,6 +152,18 @@ export function lockKey(projectId: string, lockName: string): string {
     prefix: "lock",
     projectId,
     resource: "resource",
+    identifier: lockName,
+  });
+}
+
+/**
+ * Monotonic fencing token counter key: `lock:{<projectId>}:fence:<lockName>`
+ */
+export function lockFenceKey(projectId: string, lockName: string): string {
+  return buildKey({
+    prefix: "lock",
+    projectId,
+    resource: "fence",
     identifier: lockName,
   });
 }

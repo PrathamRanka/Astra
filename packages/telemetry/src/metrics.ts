@@ -134,6 +134,30 @@ export const governorDecisionsTotal = getOrCreateCounter(
   ["decision", "reason"] as const,
 );
 
+// 8. Cache outcomes
+export const cacheHitsTotal = getOrCreateCounter(
+  "astra_cache_hits_total",
+  "Total number of cache lookups with their outcome",
+  ["result"] as const,
+  // label "result": "hit" | "miss"
+);
+
+// 9. Distributed lock acquisition outcomes
+export const lockAcquisitionsTotal = getOrCreateCounter(
+  "astra_lock_acquisitions_total",
+  "Total number of distributed lock acquisition attempts",
+  ["result"] as const,
+  // label "result": "acquired" | "failed"
+);
+
+// 10. Rate limit decisions
+export const rateLimitDecisionsTotal = getOrCreateCounter(
+  "astra_ratelimit_decisions_total",
+  "Total number of rate limiter token-take decisions",
+  ["result"] as const,
+  // label "result": "allowed" | "denied"
+);
+
 /**
  * Returns current metrics formatted in Prometheus text exposition format
  */
