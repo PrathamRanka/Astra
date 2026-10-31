@@ -2,7 +2,6 @@
 
 **Distributed primitives as one multi-tenant platform.** Cache, queue, lock and rate limiter behind one API key, one SDK, and one Tenant Governor that keeps a noisy tenant from starving everyone else.
 
-> Status: design phase. Docs are written first, code follows. See [docs/](./docs).
 
 ## Why
 
