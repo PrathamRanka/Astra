@@ -31,5 +31,8 @@
   "dependencies": {
     "pino": "^9.6.0",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2"
   }
 }
