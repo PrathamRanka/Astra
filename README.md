@@ -1,4 +1,4 @@
-# Substrate
+# Astra
 
 **Distributed primitives as one multi-tenant platform.** Cache, queue, lock and rate limiter behind one API key, one SDK, and one Tenant Governor that keeps a noisy tenant from starving everyone else.
 
@@ -6,7 +6,7 @@
 
 ## Why
 
-Backends stitch together Redis caching, BullMQ, Redlock, cron and a rate limiter. None of them know about each other, and none of them know which tenant is hammering the box. Substrate runs these primitives behind one gateway and puts a shared governor in front of all of them:
+Backends stitch together Redis caching, BullMQ, Redlock, cron and a rate limiter. None of them know about each other, and none of them know which tenant is hammering the box. Astra runs these primitives behind one gateway and puts a shared governor in front of all of them:
 
 - **Fair scheduling.** Per-tenant queues dispatched with Deficit Round Robin, weighted by plan tier.
 - **Safe locks.** TTL leases with fencing tokens, so a paused client cannot corrupt state.
@@ -73,9 +73,9 @@ make k8s-forward   # gateway on http://localhost:8080
 ## Using it
 
 ```ts
-import { Substrate } from "@substrate/sdk";
+import { Astra } from "@Astra/sdk";
 
-const s = new Substrate({ apiKey: process.env.SUBSTRATE_KEY! });
+const s = new Astra({ apiKey: process.env.Astra_KEY! });
 
 // cache with stampede protection
 const user = await s.cache.getOrLoad("user:42", () => db.getUser(42), { ttlMs: 60_000 });
@@ -97,7 +97,7 @@ const { allowed, retryAfterMs } = await s.ratelimit("login:1.2.3.4").take();
 Server code lives in `apps/`, client code in `clients/`, shared code in `packages/`. Each service is its own deployable with its own `package.json`, `Dockerfile` and env schema.
 
 ```
-substrate/
+Astra/
 ├─ apps/                                   SERVER: one folder = one deployable
 │  ├─ gateway/                             public HTTP API, port 8080
 │  │  ├─ src/
@@ -145,7 +145,7 @@ substrate/
 │        └─ rollup.ts                      hourly upserts into Postgres
 │
 ├─ clients/                                CLIENT: what developers install
-│  ├─ sdk/                                 @substrate/sdk
+│  ├─ sdk/                                 @Astra/sdk
 │  │  └─ src/
 │  │     ├─ index.ts
 │  │     ├─ client.ts                      fetch wrapper, retries, idempotency headers
@@ -154,28 +154,28 @@ substrate/
 │  │     ├─ queue.ts
 │  │     ├─ lock.ts
 │  │     └─ ratelimit.ts
-│  ├─ cli/                                 @substrate/cli  (binary: substrate)
+│  ├─ cli/                                 @Astra/cli  (binary: Astra)
 │  │  └─ src/
 │  │     ├─ index.ts
 │  │     └─ commands/                      login.ts, keys.ts, queues.ts, usage.ts
 │  └─ dashboard/                           STRETCH: minimal web UI
 │
 ├─ packages/                               SHARED: libraries, never deployed alone
-│  ├─ core/                                @substrate/core
+│  ├─ core/                                @Astra/core
 │  │  └─ src/ types.ts, errors.ts, ids.ts, logger.ts, env.ts
-│  ├─ redis/                               @substrate/redis
+│  ├─ redis/                               @Astra/redis
 │  │  └─ src/ client.ts, scripts.ts (EVALSHA loader), keys.ts (key builders)
 │  │     lua/ governor_admit.lua, rate_limit_take.lua, cache_get_or_lock.lua,
 │  │          queue_enqueue.lua, queue_claim.lua, queue_ack.lua, queue_nack.lua,
 │  │          queue_reap.lua, lock_acquire.lua, lock_release.lua, lock_renew.lua
-│  ├─ db/                                  @substrate/db
+│  ├─ db/                                  @Astra/db
 │  │  ├─ migrations/                       0001_init.sql, ...
 │  │  └─ src/ client.ts, repos/ (projects.ts, api-keys.ts, plans.ts, usage.ts)
-│  ├─ governor/                            @substrate/governor
+│  ├─ governor/                            @Astra/governor
 │  │  └─ src/ admit.ts, plans.ts
-│  ├─ primitives/                          @substrate/primitives
+│  ├─ primitives/                          @Astra/primitives
 │  │  └─ src/ cache/, queue/, lock/, ratelimit/   (each: index.ts, types.ts)
-│  └─ telemetry/                           @substrate/telemetry
+│  └─ telemetry/                           @Astra/telemetry
 │     └─ src/ metrics.ts, tracing.ts
 │
 ├─ deploy/
@@ -197,7 +197,7 @@ substrate/
 ### Dependency rules
 
 1. `apps/*` and `clients/*` may import from `packages/*`. Never from each other.
-2. `clients/*` import only `@substrate/core` types. They never import server code.
+2. `clients/*` import only `@Astra/core` types. They never import server code.
 3. Services do not call each other over HTTP. They share state through Redis (keys and streams) and Postgres.
 4. Only `gateway` (admin and auth) and `aggregator` (rollups) touch Postgres.
 
@@ -220,9 +220,9 @@ Service-specific: `PORT`, `ADMIN_TOKEN` (gateway), `SCHEDULER_TICK_MS`, `LEASE_M
 
 - Files and folders: `kebab-case`. Route files end in `.routes.ts`, repos live in `repos/`.
 - Lua scripts: `snake_case.lua`, named `<primitive>_<action>.lua`.
-- Packages: `@substrate/<name>`.
+- Packages: `@Astra/<name>`.
 - Redis keys: `<prefix>:{projectId}:<name>[:<part>]`. The braces are a hash tag so one tenant's keys share a cluster slot.
-- Metrics: `substrate_<noun>_<unit>` e.g. `substrate_governor_denied_total`.
+- Metrics: `Astra_<noun>_<unit>` e.g. `Astra_governor_denied_total`.
 - Env vars: `UPPER_SNAKE_CASE`, validated with zod at startup.
 - Commits: Conventional Commits (`feat(queue): ...`).
 
@@ -239,7 +239,7 @@ Service-specific: `PORT`, `ADMIN_TOKEN` (gateway), `SCHEDULER_TICK_MS`, `LEASE_M
 
 ## Benchmarks
 
-To be filled in after the load tests: tenant B p99 under a tenant A flood, FIFO baseline vs Substrate.
+To be filled in after the load tests: tenant B p99 under a tenant A flood, FIFO baseline vs Astra.
 
 ## Roadmap
 

@@ -1,4 +1,4 @@
-# Substrate PRD
+# Astra PRD
 
 | | |
 |---|---|
@@ -39,7 +39,7 @@ One open-source platform that exposes cache, queue, lock and rate limiting behin
 - Multi-region, Redis Cluster operation. Key names are cluster-ready, but v1 targets a single Redis.
 - Exactly-once job execution. v1 is at-least-once with idempotency keys.
 - Dashboard UI (stretch), RBAC, SSO.
-- Replacing Redis or Postgres. Substrate orchestrates them.
+- Replacing Redis or Postgres. Astra orchestrates them.
 
 ## 6. Functional requirements
 
@@ -91,7 +91,7 @@ Targets to validate, not claims.
 
 ## 8. Success metrics
 
-- Benchmark graph (FIFO vs Substrate) reproducible with one command.
+- Benchmark graph (FIFO vs Astra) reproducible with one command.
 - Chaos test passes: random pod kills during a load test produce zero lost jobs and no double-held locks.
 - All FRs marked in scope are covered by integration tests.
 - README quickstart works from a clean clone.

@@ -1,10 +1,10 @@
-# Substrate Architecture
+# Astra Architecture
 
 Companion to [prd.md](./prd.md). Diagrams: see the Mermaid architecture page published alongside this repo (HLD, request flow, Governor, job states, DRR, fencing, ERD, k8s).
 
 ## 1. Principles
 
-1. **Orchestrate, don't reinvent.** Redis and Postgres do the storage. Substrate adds tenancy, fairness, safety and metering.
+1. **Orchestrate, don't reinvent.** Redis and Postgres do the storage. Astra adds tenancy, fairness, safety and metering.
 2. **One admission path.** Every primitive goes through the Governor.
 3. **Atomic by construction.** Anything multi-step on hot data is a single Lua script.
 4. **Stateless compute.** Gateways, workers and aggregators hold no durable state. Scheduler state lives in Redis.
@@ -73,7 +73,7 @@ Job lifecycle: `delayed → ready → inflight → succeeded`, with `inflight �
 ### Lock
 - Acquire (`lock_acquire.lua`): if free or expired, set owner and expiry, `INCR lk:fence:{pid}:{name}`, return the token.
 - Renew and release check the owner token so a stale holder cannot release a newer holder's lock.
-- **Limitation, stated plainly:** Substrate can issue fencing tokens, but only the protected resource can reject stale writes. The SDK's `withLock` passes the token to the callback, and docs show the storage-side check.
+- **Limitation, stated plainly:** Astra can issue fencing tokens, but only the protected resource can reject stale writes. The SDK's `withLock` passes the token to the callback, and docs show the storage-side check.
 
 ### Rate limiter
 Token bucket in `rate_limit_take.lua`: refill from elapsed time, deduct cost, return `allowed`, `remaining`, `retryAfterMs`. Time comes from Redis `TIME`, not the client.
@@ -155,7 +155,7 @@ Headers: `Authorization: Bearer`, `Idempotency-Key`, `X-Request-Id`. Responses m
 
 ## 11. Observability
 
-Metrics: `substrate_requests_total{op,status}`, `substrate_governor_denied_total{reason}`, `substrate_queue_depth{project,queue}`, `substrate_job_latency_seconds`, `substrate_lease_expired_total`, `substrate_cache_hit_ratio`, `substrate_lock_contention_total`.
+Metrics: `Astra_requests_total{op,status}`, `Astra_governor_denied_total{reason}`, `Astra_queue_depth{project,queue}`, `Astra_job_latency_seconds`, `Astra_lease_expired_total`, `Astra_cache_hit_ratio`, `Astra_lock_contention_total`.
 Tracing: OpenTelemetry, one trace per request, with Redis script calls as child spans. Logging: pino, JSON, request-scoped.
 
 ## 12. Deployment
@@ -168,7 +168,7 @@ Docker multi-stage images per service. Local: `docker-compose.yml`. Kubernetes (
 - Integration: each Lua script against a real Redis container; Postgres repos against a real Postgres.
 - Concurrency: N parallel claimers never double-claim; N parallel enqueues with one idempotency key create one job.
 - Chaos: kill workers, scheduler leader and gateways during a load test; assert no lost jobs and no double-held locks.
-- Benchmark: k6 noisy-neighbor scenario, FIFO baseline vs Substrate.
+- Benchmark: k6 noisy-neighbor scenario, FIFO baseline vs Astra.
 
 ## 14. ADRs to write
 
