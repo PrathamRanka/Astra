@@ -1,5 +1,7 @@
 import { Redis, type RedisOptions } from "ioredis";
 
+export type RedisClient = Redis;
+
 export interface RedisClientOptions {
   connectTimeout?: number;
   maxRetriesPerRequest?: number;

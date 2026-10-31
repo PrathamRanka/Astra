@@ -14,12 +14,16 @@
   },
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "node --test dist/**/*.test.js"
   },
   "dependencies": {
     "@astra/core": "workspace:*",
     "@astra/redis": "workspace:*",
     "@astra/telemetry": "workspace:*",
     "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6"
   }
 }

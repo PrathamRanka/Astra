@@ -142,3 +142,33 @@ export function tenantGovernorKey(projectId: string, metric?: string): string {
   });
 }
 
+/**
+ * Governor rate bucket key for operation token bucket:
+ * `ratelimit:{<projectId>}:bucket:<op>`
+ */
+export function governorRateKey(projectId: string, op: string): string {
+  return rateLimitKey(projectId, op);
+}
+
+/**
+ * Governor daily quota counter key:
+ * `governor:{<projectId>}:quota:<dateStr>`
+ * e.g. `governor:{<projectId>}:quota:2026-10-31`
+ */
+export function governorDailyQuotaKey(projectId: string, dateStr: string): string {
+  return buildKey({
+    prefix: "governor",
+    projectId,
+    resource: "quota",
+    identifier: dateStr,
+  });
+}
+
+/**
+ * Governor queue backlog key:
+ * Evaluates the depth of the queue's ready/pending state:
+ * `queue:{<projectId>}:pending:<queueName>`
+ */
+export function governorQueueBacklogKey(projectId: string, queueName: string): string {
+  return queuePendingKey(projectId, queueName);
+}
