@@ -1,0 +1,17 @@
+{
+  "name": "@astra/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "bin": {
+    "astra": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astra/core": "workspace:*",
+    "@astra/sdk": "workspace:*",
+    "commander": "^13.1.0"
+  }
+}

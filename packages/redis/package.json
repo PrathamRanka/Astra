@@ -1,0 +1,28 @@
+{
+  "name": "@astra/redis",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./keys": {
+      "types": "./dist/keys.d.ts",
+      "import": "./dist/keys.js"
+    },
+    "./scripts": {
+      "types": "./dist/scripts.d.ts",
+      "import": "./dist/scripts.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && node -e \"const fs=require('fs'); fs.mkdirSync('./dist/lua', {recursive:true}); fs.readdirSync('./src/lua').forEach(f => fs.copyFileSync('./src/lua/' + f, './dist/lua/' + f));\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astra/core": "workspace:*",
+    "@astra/telemetry": "workspace:*",
+    "ioredis": "^5.6.0"
+  }
+}

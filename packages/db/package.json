@@ -1,0 +1,39 @@
+{
+  "name": "@astra/db",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "import": "./dist/client.js"
+    },
+    "./repos/api-keys": {
+      "types": "./dist/repos/api-keys.d.ts",
+      "import": "./dist/repos/api-keys.js"
+    },
+    "./repos/plans": {
+      "types": "./dist/repos/plans.d.ts",
+      "import": "./dist/repos/plans.js"
+    },
+    "./repos/projects": {
+      "types": "./dist/repos/projects.d.ts",
+      "import": "./dist/repos/projects.js"
+    },
+    "./repos/usage": {
+      "types": "./dist/repos/usage.d.ts",
+      "import": "./dist/repos/usage.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astra/core": "workspace:*",
+    "@astra/telemetry": "workspace:*",
+    "pg": "^8.13.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.11"
+  }
+}

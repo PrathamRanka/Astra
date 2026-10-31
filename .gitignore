@@ -1,0 +1,141 @@
+
+# ==========================================
+# Dependencies
+# ==========================================
+node_modules/
+.pnp/
+.pnp.cjs
+
+# pnpm
+.pnpm-store/
+
+# ==========================================
+# Environment variables and secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+!.env.template
+
+# Certificates and private keys
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+
+# ==========================================
+# Build output
+# ==========================================
+dist/
+build/
+out/
+.next/
+.nuxt/
+.output/
+.turbo/
+.tsbuildinfo
+*.tsbuildinfo
+
+# ==========================================
+# Logs and debugging
+# ==========================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# ==========================================
+# Testing and coverage
+# ==========================================
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+.vitest/
+
+# ==========================================
+# Runtime files
+# ==========================================
+*.pid
+*.pid.lock
+pids/
+*.seed
+
+# ==========================================
+# Databases and local data
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
+data/
+redis-data/
+postgres-data/
+
+# ==========================================
+# Docker
+# ==========================================
+.docker/
+
+# ==========================================
+# Kubernetes
+# ==========================================
+.kube/
+kubeconfig
+kubeconfig.*
+
+# ==========================================
+# Observability and profiling
+# ==========================================
+*.prof
+*.cpuprofile
+*.heapprofile
+*.heapsnapshot
+*.trace
+
+# ==========================================
+# IDEs and editors
+# ==========================================
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.example.json
+
+.idea/
+*.swp
+*.swo
+*~
+
+# ==========================================
+# Operating system
+# ==========================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ==========================================
+# Temporary files
+# ==========================================
+tmp/
+temp/
+.cache/
+.parcel-cache/
+.eslintcache
+.stylelintcache
+
+# ==========================================
+# Local certificates and generated assets
+# ==========================================
+certs/
+secrets/
+artifacts/
+
+# ==========================================
+# Miscellaneous
+# ==========================================
+*.bak
+*.tmp
+*.orig
+*.rej

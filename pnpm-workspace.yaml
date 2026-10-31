@@ -3,3 +3,5 @@ packages:
   - 'packages/*'
   - 'clients/*'
   - 'examples/*'
+allowBuilds:
+  esbuild: true

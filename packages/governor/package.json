@@ -1,0 +1,25 @@
+{
+  "name": "@astra/governor",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./admit": {
+      "types": "./dist/admit.d.ts",
+      "import": "./dist/admit.js"
+    },
+    "./plans": {
+      "types": "./dist/plans.d.ts",
+      "import": "./dist/plans.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astra/core": "workspace:*",
+    "@astra/redis": "workspace:*",
+    "@astra/telemetry": "workspace:*",
+    "zod": "^3.24.2"
+  }
+}

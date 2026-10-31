@@ -1,0 +1,33 @@
+{
+  "name": "@astra/primitives",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./cache": {
+      "types": "./dist/cache/index.d.ts",
+      "import": "./dist/cache/index.js"
+    },
+    "./lock": {
+      "types": "./dist/lock/index.d.ts",
+      "import": "./dist/lock/index.js"
+    },
+    "./queue": {
+      "types": "./dist/queue/index.d.ts",
+      "import": "./dist/queue/index.js"
+    },
+    "./ratelimit": {
+      "types": "./dist/ratelimit/index.d.ts",
+      "import": "./dist/ratelimit/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@astra/core": "workspace:*",
+    "@astra/redis": "workspace:*",
+    "@astra/telemetry": "workspace:*",
+    "zod": "^3.24.2"
+  }
+}
